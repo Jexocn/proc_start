@@ -248,6 +248,15 @@ static int start(args_t *args)
     int ret;
     char buf[2048];
     size_t len;
+    if (args->pwd) {
+        ret = chdir(args->pwd);
+        if (ret == -1) {
+            ret = errno;
+            printf("start set working directory to directory [%s] fail, errno [%d], error [%s]\n",
+                args->pwd, ret, strerror(ret));
+            return -1;
+        }
+    }
     if (args->log) {
         logger = log_create(args);
         if (!logger) return -1;
